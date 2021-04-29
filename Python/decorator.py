@@ -69,20 +69,20 @@ def my_func(sleep_time):
     return 'done'
 
 
-## decorator for class
-### Singleton Implementation
+# decorator for class
+## Singleton Implementation
 
-# class SingletonDecorator:
-#     _instance = defaultdict(None)
-#
-#     def __new__(cls, *args, **kwargs):
-#         if not cls._instance[cls.__name__]:
-#             cls._instance[cls.__name__] = type(cls.__name__, cls.__base__)
-#         return cls._instance[cls.__name__]
-#
-# @SingletonDecorator
-# class MyObject:
-#     a = 1
+class SingletonDecorator:
+    _instance = defaultdict(None)
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance[cls.__name__]:
+            cls._instance[cls.__name__] = type(cls.__name__, cls.__base__)
+        return cls._instance[cls.__name__]
+
+@SingletonDecorator
+class MyObject:
+    a = 1
 
 class Singleton:
 
@@ -123,3 +123,31 @@ print("Id of c1 : {}".format(str(id(c1))))
 print("Id of c2 : {}".format(str(id(c1))))
 
 print("c1 is c2 ? " + str(c1 is c2))
+
+
+## async decorator
+
+import time
+from loguru import logger
+import functools
+import asyncio
+
+def time_cost(func):
+    if asyncio.iscoroutinefunction(func):
+        @functools.wraps(func)
+        async def wrapper(*args, **kwargs):
+            start_time = time.time()
+            out = await func(*args, **kwargs)
+            duration = time.time() - start_time
+            logger.info(f'{func.__name__} executed in {duration:.4f} s')
+            return out
+    else:
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            start_time = time.time()
+            out = func(*args, **kwargs)
+            duration = time.time() - start_time
+            logger.info(f'{func.__name__} executed in {duration:.4f} s')
+            return out
+
+    return wrapper
