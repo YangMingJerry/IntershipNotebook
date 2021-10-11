@@ -9,6 +9,10 @@
 
 	git clone https://gitee.com/mirrors/pyenv.git ~/.pyenv
 
+外网：
+
+	git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+
 防止服务器的系统盘爆掉，设置软连接：ln -s /home/ronald/develop /data/ronald/develop/ 将D盘的内容挂载到C盘。
 
 安装cuda驱动，可以到nvidia官网下载确保对应显卡的型号
